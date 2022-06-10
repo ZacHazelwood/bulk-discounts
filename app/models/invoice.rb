@@ -1,5 +1,6 @@
 class Invoice < ApplicationRecord
   belongs_to :customer
+  
   has_many :transactions
   has_many :invoice_items
   has_many :items, through: :invoice_items
@@ -23,7 +24,7 @@ class Invoice < ApplicationRecord
     .distinct
     .order(:created_at)
   end
-  
+
   def self.invoices_with_merchant_items(merchant)
     merchant.invoices.distinct(:id)
   end
