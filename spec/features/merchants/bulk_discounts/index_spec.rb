@@ -3,10 +3,11 @@ require 'rails_helper'
 RSpec.describe 'Bulk Discounts Index Page' do
   it "displays all discounts with their info", :vcr do
     merchant1 = Merchant.create!(name: "Schroeder-Jerde")
-    bulk1 = BulkDiscount.create!(name: '2 at 20%', percent_discount: 0.2, threshold: 2)
-    bulk2 = BulkDiscount.create!(name: '5 at 30%', percent_discount: 0.3, threshold: 5)
+    bulk1 = merchant1.bulk_discounts.create!(name: '2 at 20%', percent_discount: 0.2, threshold: 2)
+    bulk2 = merchant1.bulk_discounts.create!(name: '5 at 30%', percent_discount: 0.3, threshold: 5)
 
-    visit merchant_bulk_discount_path(merchant1)
+    visit merchant_bulk_discounts_path(merchant1)
+    expect(page).to have_content("Schroeder-Jerde's Discounts")
 
     within ".all_discounts" do
       expect(page).to have_content("2 at 20%")
@@ -23,7 +24,7 @@ RSpec.describe 'Bulk Discounts Index Page' do
       expect(page).to_not have_content("Number of Items Required: 1")
     end
 
-    within ".discount-#{bulk1.id}" do
+    within "#discount-#{bulk1.id}" do
       expect(page).to have_link("Details")
       click_link
     end
