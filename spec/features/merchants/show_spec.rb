@@ -126,4 +126,13 @@ RSpec.describe 'merchant dashboard show' do
       expect(page).to have_link("#{invoice4.id}")
     end
   end
+
+  it "displays a link to view all discounts", :vcr do
+    visit "/merchants/#{merchant1.id}/dashboard"
+
+    expect(page).to have_link("Discounts")
+    click_link("Discounts")
+
+    expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
+  end
 end
