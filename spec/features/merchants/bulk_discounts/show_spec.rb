@@ -23,9 +23,9 @@ RSpec.describe 'Bulk Discounts Show Page' do
 
     visit merchant_bulk_discount_path(merchant1, bulk1)
 
-    expect(page).to have_content("Discount Details")
-    expect(page).to have_content("2 at 20%")
-    expect(page).to have_content("Percent Discounted: 20%")
-    expect(page).to have_content("Number of Items Required: 2")
+    expect(page).to have_link("Update Discount")
+    click_link("Update Discount")
+
+    expect(current_path).to eq(edit_merchant_bulk_discount_path(merchant1, bulk1))
   end
 end
