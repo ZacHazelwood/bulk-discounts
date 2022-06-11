@@ -18,9 +18,9 @@ class BulkDiscountsController < ApplicationController
   def new; end
 
   def create
-    bulk_discount = BulkDiscount.new(bulk_discount_params)
+    bulk_discount = @merchant.bulk_discounts.new(bulk_discount_params)
     if bulk_discount.save
-      redirect_to merchant_bulk_discounts_path(@maerchant)
+      redirect_to merchant_bulk_discounts_path(@merchant)
       flash[:success] = "You have successfully created a Discount"
     else
       redirect_to new_merchant_bulk_discount_path(@merchant)
@@ -46,6 +46,6 @@ class BulkDiscountsController < ApplicationController
   private
 
     def bulk_discount_params
-      params.require(:bulk_discount).permit(:percent_discount, :threshold)
+      params.permit(:name, :percent_discount, :threshold)
     end
 end
