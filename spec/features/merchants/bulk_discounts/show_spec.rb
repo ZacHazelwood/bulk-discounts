@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Bulk Discounts Show Page' do
   it "displays one discount with it's info", :vcr do
     merchant1 = Merchant.create!(name: "Schroeder-Jerde")
-    bulk1 = BulkDiscount.create!(name: '2 at 20%', percent_discount: 0.2, threshold: 2)
+    bulk1 = merchant1.bulk_discounts.create!(name: '2 at 20%', percent_discount: 0.2, threshold: 2)
 
     visit merchant_bulk_discount_path(merchant1, bulk1)
 
