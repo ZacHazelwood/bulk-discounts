@@ -31,4 +31,16 @@ RSpec.describe 'Bulk Discounts Index Page' do
 
     expect(current_path).to eq(merchant_bulk_discount_path(merchant1, bulk1))
   end
+
+  it "has a link to create a new discount" do
+    merchant1 = Merchant.create!(name: "Schroeder-Jerde")
+    bulk1 = merchant1.bulk_discounts.create!(name: '2 at 20%', percent_discount: 0.2, threshold: 2)
+    bulk2 = merchant1.bulk_discounts.create!(name: '5 at 30%', percent_discount: 0.3, threshold: 5)
+
+    visit merchant_bulk_discounts_path(merchant1)
+    expect(page).to have_link("Create Discount")
+
+    click_link("Create Discount")
+    expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
+  end
 end
