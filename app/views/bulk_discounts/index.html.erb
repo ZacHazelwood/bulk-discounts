@@ -11,6 +11,7 @@
         <p>Percent Discounted: <%= bd.percent_to_integer %>%</p>
         <p>Number of Items Required: <%= bd.threshold %></p>
         <p><%= link_to "Details", merchant_bulk_discount_path(@merchant, bd) %></p>
+        <p><%= button_to("Delete Discount", merchant_bulk_discount_path(@merchant, bd), method: :delete) %>
       </div></ul>
   <% end %>
 </div>
