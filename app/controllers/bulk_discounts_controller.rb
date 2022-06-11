@@ -25,6 +25,7 @@ class BulkDiscountsController < ApplicationController
     else
       redirect_to new_merchant_bulk_discount_path(@merchant)
       flash[:notice] = "Please fill out all available fields"
+    end
   end
 
   def edit
@@ -39,6 +40,7 @@ class BulkDiscountsController < ApplicationController
     else
       redirect_to edit_merchant_bulk_discount_path(@merchant, discount)
       flash[:notice] = "Please fill out all available fields"
+    end
   end
 
   private
