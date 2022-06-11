@@ -1,0 +1,11 @@
+<%= render '/partials/navbar_merchant' %><br>
+
+<%= form_with url: merchant_bulk_discounts_path(@merchant), method: :post, local: true do |f| %>
+  <%= f.label :name %><br>
+    <%=  f.text_field :name %><br>
+  <%= f.label :percent_discount %><br>
+    <%= f.number_field :percent_discount, step: 0.01 %><br>
+  <%= f.label :threshold %><br>
+      <%= f.number_field :threshold %><br>
+  <%= f.submit 'Create Discount' %>
+<% end %>

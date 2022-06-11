@@ -5,3 +5,4 @@
 
 <p>Percent Discounted: <%= @bulk_discount.percent_to_integer %>%</p>
 <p>Number of Items Required: <%= @bulk_discount.threshold %></p>
+<p><%= link_to "Update Discount", edit_merchant_bulk_discount_path(@merchant, @bulk_discount) %>
