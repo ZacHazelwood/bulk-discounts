@@ -14,4 +14,36 @@ class BulkDiscountsController < ApplicationController
     bulk_discount.destroy
     redirect_to merchant_bulk_discounts_path(@merchant)
   end
+
+  def new; end
+
+  def create
+    bulk_discount = BulkDiscount.new(bulk_discount_params)
+    if bulk_discount.save
+      redirect_to merchant_bulk_discounts_path(@maerchant)
+      flash[:success] = "You have successfully created a Discount"
+    else
+      redirect_to new_merchant_bulk_discount_path(@merchant)
+      flash[:notice] = "Please fill out all available fields"
+  end
+
+  def edit
+    @bulk_discount = BulkDiscount.find(params[:id])
+  end
+
+  def update
+    discount = BulkDiscount.find(params[:id])
+    if discount.update(bulk_discount_params)
+      redirect_to merchant_bulk_discount_path(@merchant, discount)
+      flash[:success] = "You have successfully updated this discount"
+    else
+      redirect_to edit_merchant_bulk_discount_path(@merchant, discount)
+      flash[:notice] = "Please fill out all available fields"
+  end
+
+  private
+
+    def bulk_discount_params
+      params.require(:bulk_discount).permit(:percent_discount, :threshold)
+    end
 end
