@@ -81,7 +81,7 @@ RSpec.describe "Admin Invoice Show Page" do
     expect(page).to have_content("Actual Revenue after Discount: $208,568.25")
   end
 
-  it "displays the revenue to be discounted, and the total revenue after a discount FROM the hishest available discount", :vcr do
+  it "displays the revenue to be discounted, and the total revenue after a discount FROM the highest available discount", :vcr do
     discount_1 = merchant1.bulk_discounts.create!(name: '4 at 25%', percent_discount: 0.25, threshold: 4)
     discount_2 = merchant1.bulk_discounts.create!(name: '5 at 50%', percent_discount: 0.5, threshold: 5)
     # Should be 50% off the total order
