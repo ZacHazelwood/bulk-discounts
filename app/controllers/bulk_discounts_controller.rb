@@ -1,5 +1,6 @@
 class BulkDiscountsController < ApplicationController
   before_action :find_merchant
+  before_action :get_holidays, only: [:index]
 
   def index
     @bulk_discounts = @merchant.bulk_discounts
@@ -44,8 +45,11 @@ class BulkDiscountsController < ApplicationController
   end
 
   private
-
     def bulk_discount_params
       params.permit(:name, :percent_discount, :threshold)
+    end
+
+    def get_holidays
+    @holidays = HolidayFacade.create_holidays
     end
 end
