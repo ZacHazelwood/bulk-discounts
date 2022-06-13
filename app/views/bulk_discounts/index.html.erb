@@ -1,0 +1,17 @@
+<%= render '/partials/navbar_merchant' %><br>
+
+<h1><%= @merchant.name %>'s Discounts</h1>
+
+<p><%= link_to "Create Discount", new_merchant_bulk_discount_path(@merchant) %>
+
+<div class="all_discounts">
+  <% @bulk_discounts.each do |bd| %>
+    <ul><h4><%= bd.name %></h4>
+      <div id="discount-<%= bd.id %>">
+        <p>Percent Discounted: <%= bd.percent_to_integer %>%</p>
+        <p>Number of Items Required: <%= bd.threshold %></p>
+        <p><%= link_to "Details", merchant_bulk_discount_path(@merchant, bd) %></p>
+        <p><%= button_to("Delete Discount", merchant_bulk_discount_path(@merchant, bd), method: :delete) %>
+      </div></ul>
+  <% end %>
+</div>

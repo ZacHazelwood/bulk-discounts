@@ -74,7 +74,28 @@ RSpec.describe Invoice do
     it "#total_revenue" do
       expect(invoice1.total_revenue).to eq(68175)
     end
+
+    it "#invoice_discount" do
+      discount = merchant1.bulk_discounts.create!(name: '5 at 50%', percent_discount: 0.5, threshold: 5)
+
+      expect(invoice1.invoice_discount).to eq(34087.5)
+    end
+
+    it "#discounted_revenue" do
+      discount = merchant1.bulk_discounts.create!(name: '3 at 30%', percent_discount: 0.3, threshold: 3)
+
+      expect(invoice1.discounted_revenue).to eq(47722.5)
+      expect(invoice3.discounted_revenue).to eq(195288.8)
+    end
+
+    it "#discounted_revenue applies the highest available discount" do
+      discount_1 = merchant1.bulk_discounts.create!(name: '3 at 30%', percent_discount: 0.3, threshold: 3)
+      discount_2 = merchant1.bulk_discounts.create!(name: '3 at 40%', percent_discount: 0.4, threshold: 3)
+      discount_3 = merchant1.bulk_discounts.create!(name: '10 at 90%', percent_discount: 0.9, threshold: 10)
+      # discount_3's :threshold should not be met
+
+      expect(invoice1.discounted_revenue).to eq(40905.0)
+      expect(invoice3.discounted_revenue).to eq(167390.4)
+    end
   end
-
-
 end

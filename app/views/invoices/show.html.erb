@@ -10,8 +10,11 @@
 <h2>Invoice Items</h2>
 <div class="invoice_items">
   <% @invoice.invoice_items.each do |invoice_item| %>
-  <div id="<%= invoice_item.id %>">
-    <h4>Item Name: <%= invoice_item.item.name %></h4>
+  <div id="invoice_item-<%= invoice_item.id %>">
+  <h4>Item Name: <%= invoice_item.item.name %></h4>
+  <% if invoice_item.has_discount? %>
+    <%= link_to "Discount Applied", merchant_bulk_discount_path(@merchant, invoice_item.applied_discount.id) %>
+  <% end %>
     <p>Quantity Sold: <%= invoice_item.quantity %></p>
     <p>Sold at: <%= number_to_currency(invoice_item.unit_price) %></p>
     <p>Invoice Item Status: <%= invoice_item.status.titleize %></p>
@@ -26,3 +29,5 @@
 </div>
 
 <p><b>Total Revenue:</b> <%= number_to_currency(@invoice.total_revenue) %></p>
+<p><b>Discounted Revenue:</b> <%= number_to_currency(@invoice.invoice_discount) %></p>
+<p><b>Actual Revenue after Discount:</b> <%= number_to_currency(@invoice.discounted_revenue) %></p>

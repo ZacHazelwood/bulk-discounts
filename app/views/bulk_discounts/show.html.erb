@@ -1,0 +1,8 @@
+<%= render '/partials/navbar_merchant' %><br>
+
+<h1><%= @bulk_discount.name %></h1><br>
+<h4>Discount Details</h4>
+
+<p>Percent Discounted: <%= @bulk_discount.percent_to_integer %>%</p>
+<p>Number of Items Required: <%= @bulk_discount.threshold %></p>
+<p><%= link_to "Update Discount", edit_merchant_bulk_discount_path(@merchant, @bulk_discount) %>

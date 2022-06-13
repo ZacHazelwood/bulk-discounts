@@ -26,3 +26,5 @@
 </div>
 
 <p><b>Total Revenue:</b> <%= number_to_currency(@invoice.total_revenue) %></p>
+<p><b>Discounted Revenue:</b> <%= number_to_currency(@invoice.invoice_discount) %></p>
+<p><b>Actual Revenue after Discount:</b> <%= number_to_currency(@invoice.discounted_revenue) %></p>
