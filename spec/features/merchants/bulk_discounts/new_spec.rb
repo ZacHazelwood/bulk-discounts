@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Bulk Discount New Page' do
-  it "can create a discount and display a confirmation message" do
+  it "can create a discount and display a confirmation message", :vcr do
     merchant1 = Merchant.create!(name: "Schroeder-Jerde")
 
     visit new_merchant_bulk_discount_path(merchant1)
@@ -19,7 +19,7 @@ RSpec.describe 'Bulk Discount New Page' do
     expect(page).to have_content("You have successfully created a Discount")
   end
 
-  it "displays a message if all fields are not filled" do
+  it "displays a message if all fields are not filled", :vcr do
     merchant1 = Merchant.create!(name: "Schroeder-Jerde")
 
     visit new_merchant_bulk_discount_path(merchant1)
