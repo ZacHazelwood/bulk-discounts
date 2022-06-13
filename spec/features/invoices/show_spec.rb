@@ -10,6 +10,7 @@ RSpec.describe "Merchant Invoices Show Page" do
   let!(:item3) { merchant2.items.create!(name: "Ea Voluptatum", description: "Sunt officia", unit_price: 68723) }
   let!(:item4) { merchant2.items.create!(name: "Nemo Facere", description: "Sunt eum id eius", unit_price: 15925) }
   let!(:item5) { merchant3.items.create!(name: "Expedita Aliquam", description: "Vol pt", unit_price: 31163) }
+  let!(:item6) { merchant1.items.create!(name: "A New Item", description: "Vol pt", unit_price: 31163) }
 
   let!(:invoice1) { customer1.invoices.create!(status: "in progress") }
   let!(:invoice2) { customer2.invoices.create!(status: "completed") }
@@ -50,7 +51,7 @@ RSpec.describe "Merchant Invoices Show Page" do
   let!(:invoice_item17) { InvoiceItem.create!(item_id: item5.id, invoice_id: invoice17.id, quantity: 8, unit_price: 2196, status: "packaged") }
   let!(:invoice_item18) { InvoiceItem.create!(item_id: item5.id, invoice_id: invoice18.id, quantity: 8, unit_price: 2196, status: "packaged") }
   let!(:invoice_item19) { InvoiceItem.create!(item_id: item2.id, invoice_id: invoice1.id, quantity: 9, unit_price: 23324, status: "packaged") }
-    # invoice_item19 has a second item from the first merchant, so that an invoice would have more than one item - in this case, invoice1 now has items 1 and 2
+  let!(:invoice_item20) { InvoiceItem.create!(item_id: item6.id, invoice_id: invoice1.id, quantity: 2, unit_price: 23324, status: "packaged") }
 
   let!(:customer1) { Customer.create!(first_name: "Leanne", last_name: "Braun") }
   let!(:customer2) { Customer.create!(first_name: "Sylvester", last_name: "Nader") }
@@ -118,7 +119,7 @@ RSpec.describe "Merchant Invoices Show Page" do
   it "displays the total reveue of items sold on the invoice", :vcr do
     visit merchant_invoice_path(merchant1, invoice1)
 
-    expect(page).to have_content("Total Revenue: $278,091.00")
+    expect(page).to have_content("Total Revenue: $324,739.00")
   end
 
   it "can update and Invoice Item's status via a selector", :vcr do
@@ -144,17 +145,17 @@ RSpec.describe "Merchant Invoices Show Page" do
     visit merchant_invoice_path(merchant1, invoice1)
 
     expect(page).to have_content("Discounted Revenue: $69,522.75")
-    expect(page).to have_content("Actual Revenue after Discount: $208,568.25")
+    expect(page).to have_content("Actual Revenue after Discount: $255,216.25")
   end
 
-  it "displays the revenue to be discounted, and the total revenue after a discount FROM the hishest available discount", :vcr do
+  it "displays the revenue to be discounted, and the total revenue after a discount FROM the highest available discount", :vcr do
     discount_1 = merchant1.bulk_discounts.create!(name: '4 at 25%', percent_discount: 0.25, threshold: 4)
     discount_2 = merchant1.bulk_discounts.create!(name: '5 at 50%', percent_discount: 0.5, threshold: 5)
     # Should be 50% off the total order
     visit merchant_invoice_path(merchant1, invoice1)
 
     expect(page).to have_content("Discounted Revenue: $139,045.50")
-    expect(page).to have_content("Actual Revenue after Discount: $139,045.50")
+    expect(page).to have_content("Actual Revenue after Discount: $185,693.50")
   end
 
   it "has a link to the discount applied, if any exists", :vcr do
@@ -169,5 +170,11 @@ RSpec.describe "Merchant Invoices Show Page" do
     end
 
     expect(current_path).to eq(merchant_bulk_discount_path(merchant1, discount_2))
+
+    visit merchant_invoice_path(merchant1, invoice1)
+    
+    within "#invoice_item-#{invoice_item20.id}" do
+      expect(page).to_not have_link("Discount Applied")
+    end
   end
 end
