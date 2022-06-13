@@ -124,7 +124,7 @@ RSpec.describe "Merchant Invoices Show Page" do
   it "can update and Invoice Item's status via a selector", :vcr do
     visit merchant_invoice_path(merchant1, invoice1)
 
-    within "##{invoice_item1.id}" do
+    within "#invoice_item-#{invoice_item1.id}" do
       select "#{invoice_item1.status}"
       select "shipped"
       expect(page).to have_button("Update Invoice Item Status")
@@ -155,5 +155,19 @@ RSpec.describe "Merchant Invoices Show Page" do
 
     expect(page).to have_content("Discounted Revenue: $139,045.50")
     expect(page).to have_content("Actual Revenue after Discount: $139,045.50")
+  end
+
+  it "has a link to the discount applied, if any exists", :vcr do
+    discount_1 = merchant1.bulk_discounts.create!(name: '4 at 25%', percent_discount: 0.25, threshold: 4)
+    discount_2 = merchant1.bulk_discounts.create!(name: '5 at 50%', percent_discount: 0.5, threshold: 5)
+
+    visit merchant_invoice_path(merchant1, invoice1)
+
+    within "#invoice_item-#{invoice_item1.id}" do
+      expect(page).to have_link("Discount Applied")
+      click_link("Discount Applied")
+    end
+
+    expect(current_path).to eq(merchant_bulk_discount_path(merchant1, discount_2))
   end
 end
