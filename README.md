@@ -33,4 +33,4 @@ The original repository, that may have been updated by its owner, can be found h
 * [Little Esty Shop](https://github.com/ruezheng/little-esty-shop)
 
 ## Database Diagram
-![Table Associations](images/bulk_discounts_tables.02.11 AM.png)
+![Table Associations](images/bulk_discounts_tables.png)
